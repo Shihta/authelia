@@ -18,9 +18,9 @@ sed -i -e '/^pkgname=/c pkgname=authelia' -e "/pkgver=/c $VERSION" -e '10,14d' \
 -e 's/sha256sums_armv7h.*/sha256sums_armv7l=("SKIP")/' PKGBUILD
 
 if [[ "${PACKAGE}" == "amd64" ]]; then
-  docker run --rm -v $PWD:/build authelia/aurpackager bash -c "cd /build && makedeb"
+  docker run --rm -v $PWD:/build authelia/aurpackager bash -c "cd /build && mkdir DEBIAN && echo /etc/authelia/configuration.yaml > DEBIAN/conffiles && makedeb"
 elif [[ "${PACKAGE}" == "armhf" ]]; then
-  docker run --rm --platform linux/arm/v7 -v $PWD:/build authelia/debpackager bash -c "cd /build && makedeb -A"
+  docker run --rm --platform linux/arm/v7 -v $PWD:/build authelia/debpackager bash -c "cd /build && mkdir DEBIAN && echo /etc/authelia/configuration.yaml > DEBIAN/conffiles && makedeb -A"
 else
-  docker run --rm --platform linux/arm64 -v $PWD:/build authelia/debpackager bash -c "cd /build && makedeb"
+  docker run --rm --platform linux/arm64 -v $PWD:/build authelia/debpackager bash -c "cd /build && mkdir DEBIAN && echo /etc/authelia/configuration.yaml > DEBIAN/conffiles && makedeb"
 fi
